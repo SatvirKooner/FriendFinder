@@ -2,14 +2,20 @@ $(document).ready(function() {
     let socket = io.connect('http://127.0.0.1:5000');
     let username = $("#messages").attr('data-username');
     socket.on('connect', function() {
-        socket.send(username +' has connected!');
+        socket.emit('init',  username );
     });
-    socket.on('message', function(msg) {
-        if(msg.indexOf('has connected'))
-        $("#messages").append('<li>' + '[' + username + ']' + ': ' + msg+'</li>');
+
+    socket.on('init', function(loginUser) {
+        $("#messages").append('<li>' + loginUser + " has connected to the server!" +'</li>');
     });
+
+    socket.on('publicMessage', function(payload) {
+        $("#messages").append('<li>' + '[' + payload.msgFrom + ']' + ': ' + payload.msg+'</li>');
+    });
+
     $('#sendbutton').on('click', function() {
-        socket.send($('#myMessage').val());
+        payload = {'msg':$('#myMessage').val(), 'msgFrom' : username}
+        socket.emit('publicMessage', payload);
         $('#myMessage').val('');
     });
 });

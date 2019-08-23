@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, request, session, redirect
-from flask_socketio import SocketIO, send
+from flask_socketio import SocketIO, send, emit
 from flask_pymongo  import PyMongo
 import bcrypt
 
@@ -12,10 +12,14 @@ mongo = PyMongo(app)
 
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-@socketio.on('message')
+@socketio.on('publicMessage')
 def handleMessage(msg):
-	print('Message: ' + msg)
-	send(msg, broadcast=True)
+	emit('publicMessage', msg, broadcast=True)
+
+@socketio.on('init')
+def handleInit(username):
+    emit('init', username, broadcast=True)
+
 
 @app.route('/')
 def index():
@@ -29,7 +33,7 @@ def login():
     existing_user = users.find_one({'name' : request.form['username']})
 
     if existing_user:
-        if bcrypt.hashpw(request.form['pass'].encode('utf-8'), existing_user['password']) == existing_user['password'].encode('utf-8'):
+        if bcrypt.hashpw(request.form['pass'].encode('utf-8'), existing_user['password']) == existing_user['password']:
             session['username'] = request.form['username']
             return redirect(url_for('index'))
 
