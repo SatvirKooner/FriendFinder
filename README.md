@@ -1,2 +1,2 @@
 # QwikPic
-Desktop version of snapchat I made for fun
+Web application that allows strangers to video chat with random people across the globe
