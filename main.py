@@ -3,11 +3,11 @@ from flask_socketio import SocketIO, send
 from flask_pymongo  import PyMongo
 import bcrypt
 
-app = Flask(__name__,template_folder='.')
+app = Flask(__name__,template_folder='./templates')
 
 app.config['SECRET_KEY'] = 'mysecret'
 app.config['MONGO_DBNAME'] = 'accountsDB'
-app.config['MONGO_URI'] = 'mongodb+srv://admin:<badpassword>@cluster0-eapoj.mongodb.net/accountsDB'
+app.config['MONGO_URI'] = 'mongodb+srv://admin:badpassword@cluster0-eapoj.mongodb.net/accountsDB'
 mongo = PyMongo(app)
 
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -20,16 +20,38 @@ def handleMessage(msg):
 @app.route('/')
 def index():
     if 'username' in session:
-        return 'You are logged in as ' + session['username']
+        return render_template('chat.html', user=session['username'])
     return render_template('index.html')
 
-@app.route('/login')
+@app.route('/login', methods=['POST'])
 def login():
-    return ''
+    users = mongo.db.users
+    existing_user = users.find_one({'name' : request.form['username']})
 
-@app.rout('/register')
+    if existing_user:
+        if bcrypt.hashpw(request.form['pass'].encode('utf-8'), existing_user['password']) == existing_user['password'].encode('utf-8'):
+            session['username'] = request.form['username']
+            return redirect(url_for('index'))
+
+    return 'Error: Bad login credentials'
+    
+
+    
+
+@app.route('/register', methods=['POST', 'GET'])
 def register():
-    return ''
+    if request.method == 'POST':
+        users = mongo.db.users
+        existing_user= users.find_one({'name' : request.form['username']})
+        
+        if existing_user is None:
+            hashpass = bcrypt.hashpw(request.form['pass'].encode('utf-8'), bcrypt.gensalt())
+            users.insert({'name' : request.form['username'], 'password' : hashpass})
+            session['username'] = request.form['username']
+            return redirect(url_for('index'))
+        
+        return 'Error: An account with that username already exists'
+    return render_template('register.html')
 
 if __name__ == '__main__':
 	socketio.run(app)

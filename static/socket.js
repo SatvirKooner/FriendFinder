@@ -1,11 +1,12 @@
 $(document).ready(function() {
-    var socket = io.connect('http://127.0.0.1:5000');
+    let socket = io.connect('http://127.0.0.1:5000');
+    let username = $("#messages").attr('data-username');
     socket.on('connect', function() {
-        socket.send('User has connected!');
+        socket.send(username +' has connected!');
     });
     socket.on('message', function(msg) {
-        $("#messages").append('<li>'+msg+'</li>');
-        console.log('Received message');
+        if(msg.indexOf('has connected'))
+        $("#messages").append('<li>' + '[' + username + ']' + ': ' + msg+'</li>');
     });
     $('#sendbutton').on('click', function() {
         socket.send($('#myMessage').val());

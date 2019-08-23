@@ -6,7 +6,7 @@
     </head>
     <body>
         <script type="text/javascript" src="{{ url_for('static', filename = 'socket.js') }}"></script>
-        <ul id="messages"></ul>
+        <ul id="messages" data-username={{user}}></ul>
         <input type="text" id="myMessage">
         <button id="sendbutton">Send</button>
     </body>
