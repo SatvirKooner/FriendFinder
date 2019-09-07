@@ -1,0 +1,41 @@
+h3 {
+    margin: 2px;
+}
+
+.button-section{
+    padding-left: 10px;
+}
+
+#myStream {
+    width: 400;
+    height: 300;
+    background-color: #666;
+}
+#incStream {
+    width: 400;
+    height: 300;
+    background-color: #666;
+}
+#canvas {
+    width: 400;
+    height: 300;
+    display: none;
+}
+
+#messages {
+    width: 300px;
+    height: 300px;
+    overflow-y: auto;
+    border: 1px solid black;
+}
+
+.content{
+    display: flex;
+}
+
+.col1 {
+    flex: 40%;
+}
+.col2{
+    flex: 60%;
+}

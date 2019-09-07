@@ -3,11 +3,28 @@
         <title>Chat Room</title>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'styles.css') }}">
     </head>
     <body>
         <script type="text/javascript" src="{{ url_for('static', filename = 'socket.js') }}"></script>
-        <ul id="messages" data-username={{user}}></ul>
-        <input type="text" id="myMessage">
-        <button id="sendbutton">Send</button>
+        <div class ="content">
+            <div class = "col1 button-section">
+                <ul id="messages" data-username={{user}}></ul>
+                <input type="text" id="myMessage">
+        
+                <button id="sendbutton">Send</button>
+                <br>
+                <br>
+                <button id="uploadbutton">Start Broadcasting</button>
+                <button id="stopbutton">Stop Broadcasting</button>
+            </div>
+            <div class="col2 upload-section">
+                <h3>Your Camera:</h3>
+                <video autoplay=true id="myStream"></video>
+                <h3>Incoming Stream:</h3>
+                <img id="incStream" src="{{url_for('get_stream')}}"/>
+                <canvas id ="canvas"/>
+            </div>
+        </div>
     </body>
 </html>
