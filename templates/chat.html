@@ -9,7 +9,7 @@
         <script type="text/javascript" src="{{ url_for('static', filename = 'socket.js') }}"></script>
         <div class ="content">
             <div class = "col1 button-section">
-                <ul id="messages" data-username={{user}}></ul>
+                <ul id="messages" data-room={{room}} data-username={{user}} data-streamID={{room.split(":")[1] if (room.split(":")[0] == user) else room.split(":")[3]}}></ul>
                 <input type="text" id="myMessage">
         
                 <button id="sendbutton">Send</button>
@@ -22,7 +22,7 @@
                 <h3>Your Camera:</h3>
                 <video autoplay=true id="myStream"></video>
                 <h3>Incoming Stream:</h3>
-                <img id="incStream" src="{{url_for('get_stream')}}"/>
+                <img id="incStream" src="{{url_for('get_stream', streamID = (room.split(":")[3] if (room.split(":")[0] == user) else room.split(":")[1]))}}"/>
                 <canvas id ="canvas"/>
             </div>
         </div>

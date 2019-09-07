@@ -1,6 +1,8 @@
 $(document).ready(function() {
     let socket = io.connect('http://127.0.0.1:5000');
     let username = $("#messages").attr('data-username');
+    let streamID = $("#messages").attr('data-streamID');
+    let room = $("#messages").attr('data-room');
     let video = document.querySelector("#myStream");
     let canvas = document.querySelector("#canvas");
     let ctx = canvas.getContext("2d");
@@ -32,7 +34,11 @@ $(document).ready(function() {
         ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, 0, 0 , 300, 150);
         
         let dataURL = canvas.toDataURL('image/jpeg');
-        socket.emit('input_frame', dataURL);
+        payload = {
+            dataURL,
+            streamID
+        }
+        socket.emit('input_frame', payload);
     }
 
     let constraints = {
