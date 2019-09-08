@@ -4,3 +4,4 @@ flask_pymongo
 bcrypt
 Pillow
 gunicorn
+dnspython
