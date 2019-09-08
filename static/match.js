@@ -21,6 +21,8 @@ $(document).ready(function() {
 
     $('#matchbutton').on('click', function() {
         socket.emit('initiateMatch', username + ":" + socket.id);
+        $('#matchbutton').css('display', 'none');
+        $('#spinner').css('display', 'inline-block');
     });
 
 });

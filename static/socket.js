@@ -26,11 +26,17 @@ $(document).ready(function() {
         $("#messages").append('<li>' + '[' + payload.msgFrom + ']' + ': ' + payload.msg+'</li>');
     });
 
-    $('#sendbutton').on('click', function() {
-        payload = {'msg':$('#myMessage').val(), 'msgFrom' : username, room}
+    $('#sendbutton').on('click', sendMessage);
+    $('#myMessage').keypress(event => {if (event.which == 13) sendMessage()});
+
+    function sendMessage() {
+        let msg = $('#myMessage').val();
+        if (!msg)
+            return;
+        payload = {msg, 'msgFrom' : username, room}
         socket.emit('publicMessage', payload);
         $('#myMessage').val('');
-    });
+    }
 
     function sendFrame() {
         if(!localMediaStream){
@@ -49,7 +55,7 @@ $(document).ready(function() {
     let constraints = {
         video: {
             width: { min: 400 },
-            height: { min: 480 }
+            height: { min: 300 }
         }
     };
 
