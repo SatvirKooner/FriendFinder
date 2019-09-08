@@ -1,11 +1,11 @@
 $(document).ready(function() {
-    let socket = io.connect('http://127.0.0.1:5000');
+    let socket = io.connect('https://agile-everglades-95207.herokuapp.com');
     let username = $("#matchbox").attr('data-username');
 
     socket.on('roomFound', function(newroom) {
         jQuery.ajax({
             type: 'POST',
-            url: 'http://127.0.0.1:5000/matched/' + newroom,
+            url: 'https://agile-everglades-95207.herokuapp.com/matched/' + newroom,
             async: false,
             contentType: "text/plain",  // this is the content type sent from client to server
             cache: false,
