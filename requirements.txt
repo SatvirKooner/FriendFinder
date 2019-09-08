@@ -5,3 +5,4 @@ bcrypt
 Pillow
 gunicorn
 dnspython
+eventlet
