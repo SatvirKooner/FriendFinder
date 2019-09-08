@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    let socket = io.connect('https://agile-everglades-95207.herokuapp.com', { transports: ['polling'] });
+    let socket = io.connect('https://agile-everglades-95207.herokuapp.com', { transports: ['websocket'] });
     let username = $("#messages").attr('data-username');
     let streamID = $("#messages").attr('data-streamID');
     let room = $("#messages").attr('data-room');
