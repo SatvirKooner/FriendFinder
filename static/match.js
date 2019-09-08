@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    let socket = io.connect('https://agile-everglades-95207.herokuapp.com', { transports: ['websocket'] });
+    let socket = io.connect('https://agile-everglades-95207.herokuapp.com', { transports: ['polling'] });
     let username = $("#matchbox").attr('data-username');
 
     socket.on('roomFound', function(newroom) {
