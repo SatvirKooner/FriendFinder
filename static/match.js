@@ -2,11 +2,6 @@ $(document).ready(function() {
     let socket = io.connect('http://127.0.0.1:5000');
     let username = $("#matchbox").attr('data-username');
 
-    
-    socket.on('connect', function() {
-        socket.emit('init',  username );
-    });
-
     socket.on('roomFound', function(newroom) {
         jQuery.ajax({
             type: 'POST',

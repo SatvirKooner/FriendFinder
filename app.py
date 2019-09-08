@@ -16,12 +16,13 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 queue = []
 
 @socketio.on('publicMessage')
-def handleMessage(msg):
-	emit('publicMessage', msg, broadcast=True)
+def handleMessage(data):
+	emit('publicMessage', data, room=data['room'])
 
 @socketio.on('init')
-def handleInit(username):
-    emit('init', username, broadcast=True)
+def handleInit(data):
+    join_room(data['room'])
+    emit('init', data['username'], room=data['room'])
 
 @socketio.on('initiateMatch')
 def handleMatch(userdata):
@@ -88,7 +89,6 @@ def test_message(payload):
 
 def gen(streamID):
     '''Video streaming generator function.'''
-
     app.logger.info("starting to generate frames!")
     while True:
         try: 

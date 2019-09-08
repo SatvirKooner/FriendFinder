@@ -10,7 +10,12 @@ $(document).ready(function() {
     let streamInterval;
     
     socket.on('connect', function() {
-        socket.emit('init',  username );
+        payload = {
+            username,
+            room
+        }
+        socket.emit('init',  payload);
+        console.log(payload);
     });
 
     socket.on('init', function(loginUser) {
@@ -22,7 +27,7 @@ $(document).ready(function() {
     });
 
     $('#sendbutton').on('click', function() {
-        payload = {'msg':$('#myMessage').val(), 'msgFrom' : username}
+        payload = {'msg':$('#myMessage').val(), 'msgFrom' : username, room}
         socket.emit('publicMessage', payload);
         $('#myMessage').val('');
     });
